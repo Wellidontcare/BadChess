@@ -15,3 +15,5 @@ Plans for the future:
 - check if the king is under attack
 - make castling possible
 - promotion of pawns that reach the opposing home row
+
+Project can be build via CMAKE (minimum version 3.5) and should be portable - no external dependencies are required.
