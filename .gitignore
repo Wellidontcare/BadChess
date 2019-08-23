@@ -120,6 +120,7 @@ $RECYCLE.BIN/
 *.msix
 *.msm
 *.msp
+Browse.VC.db
 
 # Windows shortcuts
 *.lnk
