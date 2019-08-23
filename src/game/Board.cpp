@@ -52,7 +52,7 @@ void chess::Board::show() {
   std::cout << "\n╚ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ╝\n";
 
   //draw chessboard
-  std::cout << "╔ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ╗\n";
+  std::cout <<  "╔ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ╗\n";
   for (
       int y = 0;
       y < BOARD_HEIGHT;
@@ -172,7 +172,7 @@ chess::Board::valid_move(const Coordinates &from, const Coordinates &to,
 
   //checks if there are pieces in the way
   if (collides(from, to)) {
-    return {false, message + "There is a piece in the way my dear ¯\\_(ツ)_/¯"};
+    return {false, message + "There is a piece in the way my dear ¯\\_(^-^)_/¯"};
   }
 
   //if all checks pass the move is valid
