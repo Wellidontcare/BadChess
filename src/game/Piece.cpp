@@ -11,9 +11,9 @@ Piece::Piece(const int &color, const int &role)
   switch (role) {
   case ROOK: {
     m_pseudo_legal_move_mask = Mask(role, color);
+  }
     m_representing_char = color == BLACK ? "♖" : "♜";
     break;
-  }
   case BISHOP: {
     m_pseudo_legal_move_mask = Mask(role, color);
     m_representing_char = color == BLACK ? "♗" : "♝";
