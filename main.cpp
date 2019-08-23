@@ -4,7 +4,7 @@
 #endif 
 #include "src/game/ChessGame.h"
 
-int wmain() {
+int main() {
 #ifdef _WIN32
 	SetConsoleOutputCP(65001);
 #endif
