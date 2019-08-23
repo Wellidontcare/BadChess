@@ -16,4 +16,4 @@ Plans for the future:
 - make castling possible
 - promotion of pawns that reach the opposing home row
 
-Project can be build via CMAKE (minimum version 3.5) and should be portable (doesn't work on windows) - no external dependencies are required.
+Project can be build via CMAKE (minimum version 3.5) and should be portable (you need a compatible font DejaVu Sans Mono works) - no external dependencies are required.
