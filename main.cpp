@@ -1,7 +1,7 @@
-﻿#include <iostream>
-#ifdef _WIN32
+﻿#ifdef _WIN32
 #include <Windows.h>
-#endif 
+#endif
+#include <iostream>
 #include "src/game/ChessGame.h"
 
 int main() {
