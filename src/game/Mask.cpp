@@ -132,12 +132,12 @@ int Mask::height() const {
   return m_height;
 }
 
-int &Mask::operator[](const int &index) {
+int &Mask::operator[](const size_t &index) {
   return m_mask[index];
 }
 Mask::Mask(std::vector<int> mask, const int &width, const int &height)
     : m_mask(std::move(mask)), m_width(width), m_height(height) {}
-int Mask::operator[](const int &index) const {
+int Mask::operator[](const size_t &index) const {
   return m_mask[index];
 }
 }//namespace chess

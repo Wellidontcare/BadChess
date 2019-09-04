@@ -269,7 +269,7 @@ bool chess::Board::on_move_mask(const int &d_x, const int &d_y, const Piece &pie
   }
 
   //returns wether the mask is 0 or 1 at the coordinates
-  return mask[c_x + c_y * mask.width()];
+  return mask[static_cast<unsigned long>(c_x + c_y * mask.width())];
 }
 
 //checks if there is a piece in the way
