@@ -2,8 +2,7 @@
 // Created by joris on 17.08.19.
 //
 
-#ifndef BADCHESS_SRC_COORDINATES_H
-#define BADCHESS_SRC_COORDINATES_H
+#pragma once
 struct Coordinates {
   int x;
   int y;
@@ -15,5 +14,3 @@ struct Coordinates {
   Coordinates operator+=(const Coordinates& other);
   Coordinates operator-=(const Coordinates& other);
 };
-
-#endif //BADCHESS_SRC_COORDINATES_H

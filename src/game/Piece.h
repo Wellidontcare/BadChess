@@ -1,9 +1,7 @@
 //
 // Created by joris on 09.08.19.
 //
-
-#ifndef _PIECE_H_
-#define _PIECE_H_
+#pragma once
 #include <vector>
 #include <map>
 #include "Mask.h"
@@ -35,4 +33,3 @@ public:
 //enum to string
 
 } //chess
-#endif //_PIECE_H_

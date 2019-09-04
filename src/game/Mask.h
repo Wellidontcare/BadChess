@@ -1,9 +1,7 @@
 //
 // Created by joris on 09.08.19.
 //
-
-#ifndef _MASK_H_
-#define _MASK_H_
+#pragma once
 #include <vector>
 namespace chess {
 
@@ -38,5 +36,3 @@ private:
   int m_height = 0;
 };
 } //namespace chess
-
-#endif //_MASK_H_

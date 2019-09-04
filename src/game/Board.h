@@ -2,8 +2,7 @@
 // Created by joris on 09.08.19.
 //
 
-#ifndef _BOARD_H_
-#define _BOARD_H_
+#pragma once
 #include <algorithm>
 #include <cassert>
 #include <vector>
@@ -48,4 +47,3 @@ public:
 };
 
 }
-#endif //_BOARD_H_

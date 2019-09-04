@@ -2,8 +2,7 @@
 // Created by joris on 17.08.19.
 //
 
-#ifndef _CHESSGAME_H_
-#define _CHESSGAME_H_
+#pragma once
 #include "Board.h"
 
 //TODO inplement proper game over logic
@@ -17,5 +16,3 @@ public:
   void run();
 };
 }//chess
-
-#endif //_CHESSGAME_H_

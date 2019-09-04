@@ -2,8 +2,7 @@
 // Created by joris on 20.08.19.
 //
 
-#ifndef BADCHESS_SRC_UTILITY_GRID_HPP
-#define BADCHESS_SRC_UTILITY_GRID_HPP
+#pragma once
 #include <vector>
 #include "../utility/Coordinates.h"
 template <typename T>
@@ -28,4 +27,3 @@ T Grid2d<T>::operator[](const Coordinates &coords) const {
   return m_grid_matrix[coords.x + coords.y * m_width];
 }
 
-#endif //BADCHESS_SRC_UTILITY_GRID_HPP
