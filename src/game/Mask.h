@@ -28,8 +28,8 @@ public:
   Mask() = default;
   int width() const;
   int height() const;
-  int &operator[](const int &index);
-  int operator[](const int &index) const;
+  int &operator[](const size_t &index);
+  int operator[](const size_t &index) const;
 private:
   std::vector<int> m_mask{};
   int m_width = 0;
