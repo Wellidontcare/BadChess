@@ -15,6 +15,20 @@ public:
   Grid2d(const int& width, const int& height);
   T& operator[](const Coordinates& coords);
   T operator[](const Coordinates& coords) const;
+  auto begin()
+  {
+      return m_grid_matrix.begin();
+  }
+  auto end()
+  {
+      return m_grid_matrix.end();
+  }
+  auto rbegin(){
+      return m_grid_matrix.rbegin();
+  }
+  auto rend(){
+      return m_grid_matrix.rend();
+  }
 };
 template<typename T>
 Grid2d<T>::Grid2d(const int &width, const int &height) : m_width(width), m_height(height), m_grid_matrix(width*height){}

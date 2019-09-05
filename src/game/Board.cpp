@@ -7,31 +7,23 @@ namespace chess {
 
 chess::Board::Board()
     : m_board_matrix(BOARD_WIDTH, BOARD_HEIGHT), m_taken_pieces{} {
+  //init black side pawns
+  std::fill_n(m_board_matrix.begin()+BOARD_WIDTH, 8,chess::Piece(BLACK, PAWN));
   //init black side
-  int i = ROOK;
-  for (; i < 5; ++i) {
-    set_piece(i, BOARD_WIDTH - 8, chess::Piece(BLACK, i));
-  }
-  for (int j = 2; j >= 0; j--, i++) {
-    set_piece(i, 0, chess::Piece(BLACK, j));
-  }
-  for (int x = 0; x < BOARD_WIDTH; ++x) {
-    set_piece(x, BOARD_HEIGHT - 7, chess::Piece(BLACK, PAWN));
-  }
+  int current_piece = ROOK;
+  std::generate_n(m_board_matrix.begin(), 5, [&current_piece](){return chess::Piece(BLACK, current_piece++);});
+  current_piece = BISHOP;
+  std::generate_n(m_board_matrix.begin()+5, 3, [&current_piece](){return chess::Piece(BLACK, current_piece--);});
 
+  //init white side pawns
+  std::fill_n(m_board_matrix.begin()+(BOARD_WIDTH*6), 8,chess::Piece(WHITE, PAWN));
   //init white side
-  i = 0;
-  for (; i < 5; ++i) {
-    set_piece(i, BOARD_HEIGHT - 1, chess::Piece(WHITE, i));
-  }
-  for (int j = 2; j >= 0; j--, i++) {
-    set_piece(i, BOARD_HEIGHT - 1, chess::Piece(WHITE, j));
-  }
-  for (int x = 0; x < BOARD_WIDTH; ++x) {
-    set_piece(x, BOARD_HEIGHT - 2, chess::Piece(WHITE, PAWN));
-  }
-}
+  current_piece = ROOK;
+  std::generate_n(m_board_matrix.end()-BOARD_WIDTH, 5, [&current_piece](){return chess::Piece(WHITE, current_piece++);});
+  current_piece = BISHOP;
+  std::generate_n(m_board_matrix.end()-3, 3, [&current_piece](){return chess::Piece(WHITE, current_piece--);});
 
+}
 void Board::set_piece(const int &x, const int &y, const chess::Piece &piece) {
   m_board_matrix[{x, y}] = piece;
 }
