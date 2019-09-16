@@ -4,6 +4,12 @@
 
 #include "ChessGame.h"
 void chess::ChessGame::run() {
+#ifdef _WIN32
+    SetConsoleOutputCP(65001);
+#endif
+  std::cout << "If you can't see this: ♘ as a white knight, you need to change your console font\n";
+  std::cout << "Press any key to start the game...";
+  std::cin.get();
   std::string last_move = "Nothing happened\n";
   while (true) {
     int turn;

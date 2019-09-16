@@ -278,21 +278,6 @@ bool chess::Board::collides(const Coordinates &from, const Coordinates &to) cons
   //knights can leap over pieces, they cant't collide
   if (selected_piece.get_role() == KNIGHT)
     return false;
-#if 0
-  //pawns can't take pieces that are directly in front
-  if (selected_piece.get_role() == PAWN){
-    if(selected_piece.get_color() == BLACK){
-      if(m_board_matrix[to + Coordinates{0, 1}].get_role() != EMPTY){
-        return true;
-      }
-    }
-    else{
-      if(m_board_matrix[to + Coordinates{0, -1}].get_role() != EMPTY){
-        return true;
-      }
-    }
-  }
-#endif
 
   Coordinates d_check_direction{0, 0};
   //case diagonal move
@@ -358,5 +343,4 @@ bool chess::Board::collides(const Coordinates &from, const Coordinates &to) cons
 std::vector<Piece> Board::taken_pieces() const {
   return m_taken_pieces;
 }
-
 }//namespace chess
