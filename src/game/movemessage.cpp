@@ -40,7 +40,13 @@ MoveMessage::MoveMessage(const std::shared_ptr<chess::Piece> &selected_piece) : 
 MoveMessage::MoveMessage(const std::shared_ptr<chess::Piece> &selected_piece, const std::shared_ptr<chess::Piece> &taken_piece, const std::string &from, const std::string &to)
     : m_selected_piece(selected_piece), m_taken_piece(taken_piece), m_from(from), m_to(to) {}
 
-MoveMessage::MoveMessage(const std::shared_ptr<chess::Piece> &selected_piece, const std::string &from, const std::string &to) : m_selected_piece(selected_piece), m_from(from), m_to(to) {}
+MoveMessage::MoveMessage(const std::shared_ptr<chess::Piece> &selected_piece, std::string from, std::string to) : m_selected_piece(selected_piece), m_from(std::move(from)), m_to(std::move(to)) {}
+bool MoveMessage::is_valid_move() {
+  return false;
+}
+std::string MoveMessage::get_message() {
+  return " ";
+}
 
 InvalidMoveMessageOutsideOfBoard::InvalidMoveMessageOutsideOfBoard(const std::shared_ptr<chess::Piece> &selected_piece) : MoveMessage(selected_piece) {}
 

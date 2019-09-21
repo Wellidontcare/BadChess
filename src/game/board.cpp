@@ -8,7 +8,7 @@ namespace chess {
 chess::Board::Board()
     : m_board_matrix(BOARD_WIDTH, BOARD_HEIGHT, ChessPieceFactory::make(NONE, EMPTY)), m_taken_pieces{} {
   //init black side pawns
-  std::fill_n(m_board_matrix.begin()+BOARD_WIDTH, 8,chess::ChessPieceFactory::make(BLACK, PAWN));
+  std::generate_n(m_board_matrix.begin()+BOARD_WIDTH, 8,[](){return chess::ChessPieceFactory::make(BLACK, PAWN);});
   //init black side
   int current_piece = ROOK;
   std::generate_n(m_board_matrix.begin(), 5, [&current_piece](){return chess::ChessPieceFactory::make(BLACK, current_piece++);});

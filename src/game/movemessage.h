@@ -3,13 +3,14 @@
 //
 #pragma once
 #include <string>
+#include <memory>
 #include "piece.h"
 
 class MoveMessage {
 public:
-  MoveMessage(const std::shared_ptr<chess::Piece>& selected_piece);
+  explicit MoveMessage(const std::shared_ptr<chess::Piece>& selected_piece);
   MoveMessage(const std::shared_ptr<chess::Piece>& selected_piece, const std::shared_ptr<chess::Piece>& taken_piece, const std::string& from, const std::string& to);
-  MoveMessage(const std::shared_ptr<chess::Piece>& selected_piece, const std::string& from, const std::string& to);
+  MoveMessage(const std::shared_ptr<chess::Piece>& selected_piece, std::string from, std::string to);
   MoveMessage() = default;
   virtual bool is_valid_move();
   virtual std::string get_message();
@@ -38,14 +39,14 @@ class InvalidMoveMessageNothingMoved : public MoveMessage{
 
 class InvalidMoveMessageWrongColor : public MoveMessage{
 public:
-    InvalidMoveMessageWrongColor(const std::shared_ptr<chess::Piece>& selected_piece);
+    explicit InvalidMoveMessageWrongColor(const std::shared_ptr<chess::Piece>& selected_piece);
     std::string get_message() override;
     bool is_valid_move() override;
 };
 
 class InvalidMoveMessageOutsideOfBoard : public MoveMessage{
 public:
-    InvalidMoveMessageOutsideOfBoard(const std::shared_ptr<chess::Piece>& selected_piece);
+    explicit InvalidMoveMessageOutsideOfBoard(const std::shared_ptr<chess::Piece>& selected_piece);
 
 
     // MoveMessage interface
@@ -57,7 +58,7 @@ public:
 class InvalidMoveMessageOutOfRange : public MoveMessage{
 
 public:
-    InvalidMoveMessageOutOfRange(const std::shared_ptr<chess::Piece>& selected_piece);
+    explicit InvalidMoveMessageOutOfRange(const std::shared_ptr<chess::Piece>& selected_piece);
     // MoveMessage interface
 public:
     bool is_valid_move() override;
@@ -66,7 +67,7 @@ public:
 
 class InvalidMoveMessageIllegalMove : public MoveMessage{
 public:
-    InvalidMoveMessageIllegalMove(const std::shared_ptr<chess::Piece>& selected_piece);
+    explicit InvalidMoveMessageIllegalMove(const std::shared_ptr<chess::Piece>& selected_piece);
     // MoveMessage interface
 public:
     bool is_valid_move() override;
@@ -102,8 +103,8 @@ public:
     ValidMoveMessagePieceTaken(const std::shared_ptr<chess::Piece>& selected_piece, const std::shared_ptr<chess::Piece>& taken_piece, const std::string& from, const std::string& to);
     // MoveMessage interface
 public:
-    bool is_valid_move();
-    std::string get_message();
+    bool is_valid_move() override ;
+    std::string get_message() override;
 };
 
 class ValidMoveMessageJustMoved : public MoveMessage{
@@ -112,6 +113,6 @@ public:
 
     // MoveMessage interface
 public:
-    bool is_valid_move();
-    std::string get_message();
+    bool is_valid_move() override;
+    std::string get_message() override;
 };
