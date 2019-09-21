@@ -50,14 +50,14 @@ void chess::ChessGame::run() {
         getchar();
         continue;
       }
-      MoveMessage move = m_board.move_piece(from, to, turn);
-      if (!move.valid_move) {
-        std::cout << move.message << '\n';
+      std::shared_ptr<MoveMessage> move = m_board.move_piece(from, to, turn);
+      if (!move->is_valid_move()) {
+        std::cout << move->get_message() << '\n';
         std::cout << "\nPress any key to try again:)\n";
         std::cin.get();
         getchar();
       } else {
-        last_move = move.message;
+        last_move = move->get_message();
         black_moved = true;
       }
     }
@@ -80,14 +80,14 @@ void chess::ChessGame::run() {
         getchar();
         continue;
       }
-      MoveMessage move = m_board.move_piece(from, to, turn);
-      if (!move.valid_move) {
-        std::cout << move.message << '\n';
+      std::shared_ptr<MoveMessage> move = m_board.move_piece(from, to, turn);
+      if (!move->is_valid_move()) {
+        std::cout << move->get_message() << '\n';
         std::cout << "\nPress any key to try again:)\n";
         std::cin.get();
         getchar();
       } else {
-        last_move = move.message;
+        last_move = move->get_message();
         white_moved = true;
       }
     }

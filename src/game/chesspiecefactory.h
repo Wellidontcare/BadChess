@@ -8,6 +8,7 @@
 #include "pieces/queen.h"
 #include "pieces/pawn.h"
 #include "pieces/bishop.h"
+#include "pieces/king.h"
 
 namespace chess {
 

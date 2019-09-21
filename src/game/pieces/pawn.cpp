@@ -2,7 +2,7 @@
 
 chess::Pawn::Pawn(const int& color) : Piece(color)
 {
-
+m_pseudo_legal_move_mask = Mask(PAWN, color);
 }
 
 std::string chess::Pawn::get_icon() const

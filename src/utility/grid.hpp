@@ -16,6 +16,7 @@ public:
   Grid2d(const int& width, const int& height, const T& init_val);
   T& operator[](const Coordinates& coords);
   T operator[](const Coordinates& coords) const;
+
   auto begin()
   {
       return m_grid_matrix.begin();

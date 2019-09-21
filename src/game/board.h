@@ -28,7 +28,7 @@ private:
   void set_piece(const int &x, const int &y, const std::shared_ptr<Piece>& piece);
 
   //game logic
-  MoveMessage valid_move(const Coordinates &from,
+  std::shared_ptr<MoveMessage> valid_move(const Coordinates &from,
                          const Coordinates &to,
                          const int &current_turn_color) const;
   bool en_passant(const std::shared_ptr<Piece>& selected_piece, const std::shared_ptr<Piece>& left_piece, const std::shared_ptr<Piece>& right_piece);
@@ -43,7 +43,7 @@ public:
 
   //Draw the board
   void show();
-  MoveMessage move_piece(const std::string &from, const std::string &to, const int &current_turn_color);
+  std::shared_ptr<MoveMessage> move_piece(const std::string &from, const std::string &to, const int &current_turn_color);
   std::vector<std::shared_ptr<Piece>> taken_pieces() const;
 };
 

@@ -12,6 +12,8 @@ std::shared_ptr<chess::Piece> chess::ChessPieceFactory::make(const int &color, c
         case QUEEN:
             return std::make_shared<Queen>(Queen(color));
         case KING:
+            return std::make_shared<King>(King(color));
+        case PAWN:
             return std::make_shared<Pawn>(Pawn(color));
         default:
             return std::make_shared<EmptyField>(EmptyField());
