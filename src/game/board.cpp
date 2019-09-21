@@ -91,7 +91,7 @@ chess::Board::move_piece(const std::string &from, const std::string &to, const i
     Coordinates right_piece_coords =
         {(coords[0].x + 1), (selected_piece->get_color() == BLACK ? coords[0].y + 1 : coords[0].y - 1)};
     if (en_passant(selected_piece, m_board_matrix[left_piece_coords], m_board_matrix[right_piece_coords])) {
-      set_piece(coords[0].x, coords[0].y, std::make_shared<Piece>(EmptyField()));
+      set_piece(coords[0].x, coords[0].y, std::make_shared<EmptyField>(EmptyField()));
       set_piece(coords[1].x, coords[1].y, selected_piece);
       return {true, message.message + "Nice move, you took that pawn en passant :)\n"};
     }
@@ -100,7 +100,7 @@ chess::Board::move_piece(const std::string &from, const std::string &to, const i
     }
     else{
         //if a piece was taken add it to taken pieces
-        m_taken_pieces.push_back(std::make_shared<Piece>(EmptyField()));
+        m_taken_pieces.push_back(std::make_shared<EmptyField>(EmptyField()));
         std::swap(m_taken_pieces.back(), to_move_to);
     }
     //returns what happened
@@ -187,7 +187,7 @@ bool chess::Board::en_passant(const std::shared_ptr<Piece>& selected_piece, cons
         std::shared_ptr<Piece> to_take = !left_piece->empty() ? left_piece : right_piece;
         if (to_take->get_color() != WHITE) {
           //add the taken pieces to the taken pieces and sets the cell to empty
-          m_taken_pieces.push_back(std::make_shared<Piece>(EmptyField()));
+          m_taken_pieces.push_back(std::make_shared<EmptyField>(EmptyField()));
           std::swap(m_taken_pieces.back(), to_take);
           ret = true;
         }
@@ -199,7 +199,7 @@ bool chess::Board::en_passant(const std::shared_ptr<Piece>& selected_piece, cons
       if (!left_piece->empty() || !right_piece->empty()) {
         std::shared_ptr<Piece> to_take = !left_piece->empty() ? left_piece : right_piece;
         if (to_take->get_color() != BLACK) {
-          m_taken_pieces.push_back(std::make_shared<Piece>(EmptyField()));
+          m_taken_pieces.push_back(std::make_shared<EmptyField>(EmptyField()));
          std::swap(m_taken_pieces.back(), to_take);
         }
       }

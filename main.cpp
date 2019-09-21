@@ -2,7 +2,7 @@
 #include <Windows.h>
 #endif
 #include <iostream>
-#include "src/game/ChessGame.h"
+#include "src/game/chessgame.h"
 
 int main() {
   chess::ChessGame App;

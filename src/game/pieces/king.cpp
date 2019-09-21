@@ -9,3 +9,9 @@ std::string chess::King::get_icon() const
 {
     return m_color == WHITE ? "♔" : "♚";
 }
+int chess::King::get_role() const {
+  return KING;
+}
+std::string chess::King::get_role_str() const {
+  return "king";
+}

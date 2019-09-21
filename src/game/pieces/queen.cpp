@@ -14,3 +14,6 @@ std::string chess::Queen::get_role_str() const
 {
     return "queen";
 }
+int chess::Queen::get_role() const {
+  return QUEEN;
+}

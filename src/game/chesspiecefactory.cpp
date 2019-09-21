@@ -4,16 +4,16 @@ std::shared_ptr<chess::Piece> chess::ChessPieceFactory::make(const int &color, c
 {
         switch (role) {
         case ROOK:
-            return std::make_shared<Piece>(Rook(color));
+            return std::make_shared<Rook>(Rook(color));
         case KNIGHT:
-            return std::make_shared<Piece>(Knight(color));
+            return std::make_shared<Knight>(Knight(color));
         case BISHOP:
-            return std::make_shared<Piece>(Bishop(color));
+            return std::make_shared<Bishop>(Bishop(color));
         case QUEEN:
-            return std::make_shared<Piece>(Queen(color));
+            return std::make_shared<Queen>(Queen(color));
         case KING:
-            return std::make_shared<Piece>(Pawn(color));
+            return std::make_shared<Pawn>(Pawn(color));
         default:
-            return std::make_shared<Piece>(EmptyField());
+            return std::make_shared<EmptyField>(EmptyField());
         }
 }

@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "Board.h"
+#include "board.h"
 
 //TODO inplement proper game over logic
 //TODO check for chess and chess mate

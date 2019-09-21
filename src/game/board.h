@@ -9,10 +9,10 @@
 #include <map>
 #include <string>
 #include <iostream>
-#include "MoveMessage.h"
-#include "Piece.h"
-#include "../utility/Grid.hpp"
-#include "../utility/Coordinates.h"
+#include "movemessage.h"
+#include "piece.h"
+#include "../utility/grid.hpp"
+#include "../utility/coordinates.h"
 #include "../utility/input.h"
 #include "chesspiecefactory.h"
 
