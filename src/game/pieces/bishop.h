@@ -3,16 +3,15 @@
 #include "../piece.h"
 namespace chess {
 
-class Bishop : public Piece
-{
+class Bishop : public Piece {
 public:
-    Bishop(const int& color);
+  Bishop(const int &color);
 
-    // Piece interface
+  // Piece interface
 public:
-    std::string get_icon() const override;
-    int get_role() const override;
-    std::string get_role_str() const override;
+  std::string get_icon() const override;
+  int get_role() const override;
+  std::string get_role_str() const override;
 };
 }
 

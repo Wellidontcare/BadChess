@@ -25,25 +25,32 @@ class Board {
 private:
   Grid2d<std::shared_ptr<Piece>> m_board_matrix;
   std::vector<std::shared_ptr<Piece>> m_taken_pieces;
-  void set_piece(const int &x, const int &y, const std::shared_ptr<Piece>& piece);
+  void set_piece(const int &x, const int &y, const std::shared_ptr<Piece> &piece);
 
   //game logic
   std::shared_ptr<MoveMessage> valid_move(const Coordinates &from,
-                         const Coordinates &to,
-                         const int &current_turn_color) const;
-  bool en_passant(const std::shared_ptr<Piece>& selected_piece, const std::shared_ptr<Piece>& left_piece, const std::shared_ptr<Piece>& right_piece);
+                                          const Coordinates &to,
+                                          const int &current_turn_color) const;
+  bool en_passant(const std::shared_ptr<Piece> &selected_piece,
+                  const std::shared_ptr<Piece> &left_piece,
+                  const std::shared_ptr<Piece> &right_piece);
   bool collides(const Coordinates &from, const Coordinates &to) const;
-  static bool correct_color(const int &current_turn_color, const std::shared_ptr<Piece>& piece);
+  static bool correct_color(const int &current_turn_color, const std::shared_ptr<Piece> &piece);
   static bool inside_board(const Coordinates &to);
-  static bool inside_mask(const int &d_x, const int &d_y, const std::shared_ptr<Piece>& piece);
-  static bool on_move_mask(const int &d_x, const int &d_y, const std::shared_ptr<Piece>& piece, const bool &takes_piece);
+  static bool inside_mask(const int &d_x, const int &d_y, const std::shared_ptr<Piece> &piece);
+  static bool on_move_mask(const int &d_x,
+                           const int &d_y,
+                           const std::shared_ptr<Piece> &piece,
+                           const bool &takes_piece);
 
 public:
   Board();
 
   //Draw the board
   void show();
-  std::shared_ptr<MoveMessage> move_piece(const std::string &from, const std::string &to, const int &current_turn_color);
+  std::shared_ptr<MoveMessage> move_piece(const std::string &from,
+                                          const std::string &to,
+                                          const int &current_turn_color);
   std::vector<std::shared_ptr<Piece>> taken_pieces() const;
 };
 

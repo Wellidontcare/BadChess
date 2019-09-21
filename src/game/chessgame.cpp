@@ -8,7 +8,7 @@
 #endif
 void chess::ChessGame::run() {
 #ifdef _WIN32
-    SetConsoleOutputCP(65001);
+  SetConsoleOutputCP(65001);
 #endif
   std::cout << "If you can't see this: ♘ as a white knight, you need to change your console font\n";
   std::cout << "Press any key to start the game...";
@@ -93,7 +93,7 @@ void chess::ChessGame::run() {
     }
     if (check_game_over()) {
       std::cout << std::string(50, '\n');
-      std::cout <<  R"( _    _ _   _ _____ _____ _____   _    _  _____ _   _ _
+      std::cout << R"( _    _ _   _ _____ _____ _____   _    _  _____ _   _ _
                        | |  | | | | |_   _|_   _|  ___| | |  | ||  _  | \ | | |
                        | |  | | |_| | | |   | | | |__   | |  | || | | |  \| | |
                        | |/\| |  _  | | |   | | |  __|  | |/\| || | | | . ` | |
@@ -107,7 +107,7 @@ void chess::ChessGame::run() {
 }
 bool chess::ChessGame::check_game_over() {
   for (auto p : m_board.taken_pieces()) {
-    if(p->get_role() == KING){
+    if (p->get_role() == KING) {
       return true;
     }
   }

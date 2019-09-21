@@ -4,16 +4,15 @@
 
 namespace chess {
 
-class King : public Piece
-{
+class King : public Piece {
 public:
-    King(const int& color);
+  King(const int &color);
 
-    // Piece interface
+  // Piece interface
 public:
-    std::string get_icon() const override;
-    int get_role() const override;
-    std::string get_role_str() const override;
+  std::string get_icon() const override;
+  int get_role() const override;
+  std::string get_role_str() const override;
 };
 }
 

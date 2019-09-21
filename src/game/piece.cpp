@@ -15,12 +15,11 @@ int Piece::get_color() const {
 }
 
 Mask Piece::get_mask() const {
-    return m_pseudo_legal_move_mask;
+  return m_pseudo_legal_move_mask;
 }
 
-std::string Piece::get_color_str() const
-{
- return m_color == BLACK ? "black" : "white";
+std::string Piece::get_color_str() const {
+  return m_color == BLACK ? "black" : "white";
 }
 
 void Piece::set_mask(const Mask &new_mask) {
