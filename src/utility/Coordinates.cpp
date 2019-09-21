@@ -2,7 +2,7 @@
 // Created by joris on 17.08.19.
 //
 
-#include "Coordinates.h"
+#include "coordinates.h"
 
 bool Coordinates::operator==(const Coordinates &other) const {
   return (other.x == this->x && other.y == this->y);

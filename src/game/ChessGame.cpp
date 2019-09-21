@@ -2,7 +2,8 @@
 // Created by joris on 17.08.19.
 //
 
-#include "ChessGame.h"
+#include "chessgame.h"
+#include <Windows.h>
 void chess::ChessGame::run() {
 #ifdef _WIN32
     SetConsoleOutputCP(65001);
@@ -103,8 +104,8 @@ void chess::ChessGame::run() {
   }
 }
 bool chess::ChessGame::check_game_over() {
-  for (const Piece &p : m_board.taken_pieces()) {
-    if(p.get_role() == KING){
+  for (auto p : m_board.taken_pieces()) {
+    if(p->get_role() == KING){
       return true;
     }
   }

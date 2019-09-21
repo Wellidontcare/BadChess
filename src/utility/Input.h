@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "../game/Board.h"
+#include "../game/board.h"
 
 namespace chess{
 std::vector<Coordinates> parse_input(const std::string& from, const std::string& to);

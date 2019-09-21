@@ -2,7 +2,7 @@
 // Created by joris on 17.08.19.
 //
 
-#include "Input.h"
+#include "input.h"
 namespace chess {
 //converts the string input to coordinates
 std::vector<Coordinates> parse_input(const std::string &from, const std::string &to) {

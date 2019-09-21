@@ -4,7 +4,7 @@
 
 #pragma once
 #include <vector>
-#include "../utility/Coordinates.h"
+#include "../utility/coordinates.h"
 template <typename T>
 class Grid2d {
 private:
@@ -13,6 +13,7 @@ private:
   std::vector<T> m_grid_matrix;
 public:
   Grid2d(const int& width, const int& height);
+  Grid2d(const int& width, const int& height, const T& init_val);
   T& operator[](const Coordinates& coords);
   T operator[](const Coordinates& coords) const;
   auto begin()
@@ -29,11 +30,24 @@ public:
   auto rend(){
       return m_grid_matrix.rend();
   }
+  ~Grid2d(){
+      if(std::is_pointer<T>::value) {
+      for(T ptr : m_grid_matrix){
+          delete ptr;
+      }
+      }
+  }
 };
 template<typename T>
 Grid2d<T>::Grid2d(const int &width, const int &height) : m_width(width), m_height(height), m_grid_matrix(width*height){}
 template<typename T>
-T &Grid2d<T>::operator[](const Coordinates &coords) {
+Grid2d<T>::Grid2d(const int &width, const int &height, const T& init_val) : m_width(width), m_height(height), m_grid_matrix(width*height){
+    for(T& field : m_grid_matrix){
+        field = init_val;
+    }
+}
+template<typename T>
+T& Grid2d<T>::operator[](const Coordinates &coords) {
   return m_grid_matrix[coords.x + coords.y * m_width];
 }
 template<typename T>

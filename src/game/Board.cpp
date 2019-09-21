@@ -2,30 +2,30 @@
 // Created by joris on 09.08.19.
 //
 
-#include "Board.h"
+#include "board.h"
 namespace chess {
 
 chess::Board::Board()
-    : m_board_matrix(BOARD_WIDTH, BOARD_HEIGHT), m_taken_pieces{} {
+    : m_board_matrix(BOARD_WIDTH, BOARD_HEIGHT, std::make_shared<Piece>(new EmptyField)), m_taken_pieces{} {
   //init black side pawns
-  std::fill_n(m_board_matrix.begin()+BOARD_WIDTH, 8,chess::Piece(BLACK, PAWN));
+  std::fill_n(m_board_matrix.begin()+BOARD_WIDTH, 8,chess::ChessPieceFactory::create_piece(BLACK, PAWN));
   //init black side
   int current_piece = ROOK;
-  std::generate_n(m_board_matrix.begin(), 5, [&current_piece](){return chess::Piece(BLACK, current_piece++);});
+  std::generate_n(m_board_matrix.begin(), 5, [&current_piece](){return chess::ChessPieceFactory::create_piece(BLACK, current_piece++);});
   current_piece = BISHOP;
-  std::generate_n(m_board_matrix.begin()+5, 3, [&current_piece](){return chess::Piece(BLACK, current_piece--);});
+  std::generate_n(m_board_matrix.begin()+5, 3, [&current_piece](){return chess::ChessPieceFactory::create_piece(BLACK, current_piece--);});
 
   //init white side pawns
-  std::fill_n(m_board_matrix.begin()+(BOARD_WIDTH*6), 8,chess::Piece(WHITE, PAWN));
+  std::fill_n(m_board_matrix.begin()+(BOARD_WIDTH*6), 8,chess::ChessPieceFactory::create_piece(WHITE, PAWN));
   //init white side
   current_piece = ROOK;
-  std::generate_n(m_board_matrix.end()-BOARD_WIDTH, 5, [&current_piece](){return chess::Piece(WHITE, current_piece++);});
+  std::generate_n(m_board_matrix.end()-BOARD_WIDTH, 5, [&current_piece](){return chess::ChessPieceFactory::create_piece(WHITE, current_piece++);});
   current_piece = BISHOP;
-  std::generate_n(m_board_matrix.end()-3, 3, [&current_piece](){return chess::Piece(WHITE, current_piece--);});
+  std::generate_n(m_board_matrix.end()-3, 3, [&current_piece](){return chess::ChessPieceFactory::create_piece(WHITE, current_piece--);});
 
 }
-void Board::set_piece(const int &x, const int &y, const chess::Piece &piece) {
-  m_board_matrix[{x, y}] = piece;
+void Board::set_piece(const int &x, const int &y, const std::shared_ptr<Piece>& piece) {
+    m_board_matrix[{x, y}] = std::move(piece);
 }
 
 //draws the board graphics
@@ -33,8 +33,8 @@ void chess::Board::show() {
   //draw taken pieces
   std::cout << "╔ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ╗\n ";
   int piece_count = 0;
-  for (const Piece &p : m_taken_pieces) {
-    std::cout << p.get_icon() << " ";
+  for (auto p : m_taken_pieces) {
+    std::cout << p->get_icon() << " ";
     if (piece_count > 15) {
       std::cout << '\n';
       piece_count = 0;
@@ -54,7 +54,7 @@ void chess::Board::show() {
         int x = 0;
         x < BOARD_WIDTH;
         ++x) {
-      std::string current_icon = m_board_matrix[{x, y}].get_icon();
+      std::string current_icon = m_board_matrix[{x, y}]->get_icon();
       std::string current_spacing = " ";
       if (current_icon == " ") {
         //generate checker pattern (if x+y odd)
@@ -79,36 +79,36 @@ chess::Board::move_piece(const std::string &from, const std::string &to, const i
   std::vector<Coordinates> coords = parse_input(from, to);
   MoveMessage message = valid_move(coords[0], coords[1], current_turn_color);
 
-  Piece selected_piece = m_board_matrix[coords[0]];
-  Piece to_move_to = m_board_matrix[coords[1]];
+  auto selected_piece = m_board_matrix[coords[0]];
+  auto to_move_to = m_board_matrix[coords[1]];
 
+  bool took_piece = !to_move_to->empty();
   if (message.valid_move) {
 
     //check en passant
     Coordinates left_piece_coords =
-        {(coords[0].x - 1), (selected_piece.get_color() == BLACK ? coords[0].y + 1 : coords[0].y - 1)};
+        {(coords[0].x - 1), (selected_piece->get_color() == BLACK ? coords[0].y + 1 : coords[0].y - 1)};
     Coordinates right_piece_coords =
-        {(coords[0].x + 1), (selected_piece.get_color() == BLACK ? coords[0].y + 1 : coords[0].y - 1)};
+        {(coords[0].x + 1), (selected_piece->get_color() == BLACK ? coords[0].y + 1 : coords[0].y - 1)};
     if (en_passant(selected_piece, m_board_matrix[left_piece_coords], m_board_matrix[right_piece_coords])) {
-      set_piece(coords[0].x, coords[0].y, chess::Piece{});
+      set_piece(coords[0].x, coords[0].y, std::make_shared<Piece>(new EmptyField));
       set_piece(coords[1].x, coords[1].y, selected_piece);
       return {true, message.message + "Nice move, you took that pawn en passant :)\n"};
     }
-
-    set_piece(coords[0].x, coords[0].y, chess::Piece{});
-    set_piece(coords[1].x, coords[1].y, selected_piece);
-
-    //if a piece was taken add it to taken pieces
-    if (!to_move_to.empty()) {
-      m_taken_pieces.push_back(to_move_to);
+    if(to_move_to->empty()){
+        selected_piece.swap(to_move_to);
     }
-
+    else{
+        //if a piece was taken add it to taken pieces
+        m_taken_pieces.push_back(std::make_shared<Piece>(new EmptyField));
+        to_move_to.swap(m_taken_pieces.back());
+    }
     //returns what happened
-    return {true, message.message + "The " + selected_piece.get_color_str() + " "
-        + selected_piece.get_role_str() + " moved from " + from + " to " + to + " "
-        + (!to_move_to.empty() ? std::string("and took the ")
-            + to_move_to.get_color_str() + " "
-            + to_move_to.get_role_str() + "!"
+    return {true, message.message + "The " + to_move_to->get_color_str() + " "
+        + to_move_to->get_role_str() + " moved from " + from + " to " + to + " "
+        + (took_piece ? std::string("and took the ")
+            + m_taken_pieces.back()->get_color_str() + " "
+            + m_taken_pieces.back()->get_role_str() + "!"
                                : std::string(""))
         + "\n"};
   }
@@ -127,22 +127,22 @@ chess::Board::valid_move(const Coordinates &from, const Coordinates &to,
             "Staying at the same place from where you started is not legal! This action will be reported <3"};
 
   //checks for empty selected field
-  auto selected_piece = m_board_matrix[from];
-  if (selected_piece.empty())
+  std::shared_ptr<Piece> selected_piece = m_board_matrix[from];
+  if (selected_piece->empty())
     return {false, "You can't move nothing dummy <3"};
 
   //checks for correct color
   if (!correct_color(current_turn_color, selected_piece))
     return {false, message + "You can't move that "
-        + selected_piece.get_color_str() + " "
-        + selected_piece.get_role_str()
+        + selected_piece->get_color_str() + " "
+        + selected_piece->get_role_str()
         + ". It has the wrong color sweetheart <3"};
 
   //checks if the move would be inside the board
   if (!inside_board(to))
     return {false, message + "You can't move that "
-        + selected_piece.get_color_str() + " "
-        + selected_piece.get_role_str()
+        + selected_piece->get_color_str() + " "
+        + selected_piece->get_role_str()
         + ". It would be outside of the board darling <3"};
 
   //checks if the piece can move that far
@@ -150,16 +150,16 @@ chess::Board::valid_move(const Coordinates &from, const Coordinates &to,
   int d_y = to.y - from.y;
   if (!inside_mask(abs(d_x), abs(d_y), selected_piece))
     return {false, message + "You can't move that "
-        + selected_piece.get_color_str() + " "
-        + selected_piece.get_role_str()
+        + selected_piece->get_color_str() + " "
+        + selected_piece->get_role_str()
         + ". This piece can't move that far honey <3"};
 
   //checks if the moved pattern matches the valid move pattern for that piece
-  bool takes_piece = m_board_matrix[to].get_icon() != std::string(" ");
+  bool takes_piece = m_board_matrix[to]->get_icon() != std::string(" ");
   if (!on_move_mask(d_x, d_y, selected_piece, takes_piece))
     return {false, message + "You can't move that "
-        + selected_piece.get_color_str() + " "
-        + selected_piece.get_role_str()
+        + selected_piece->get_color_str() + " "
+        + selected_piece->get_role_str()
         + ". This is not a valid move for this piece sugar <3"};
 
   //checks if there are pieces in the way
@@ -173,54 +173,54 @@ chess::Board::valid_move(const Coordinates &from, const Coordinates &to,
 
 //checks for en_passant and ensures the pawn can only move two steps on its first move
 //returns true if a piece was taken en passant
-bool chess::Board::en_passant(Piece &selected_piece, Piece &left_piece, Piece &right_piece) {
+bool chess::Board::en_passant(const std::shared_ptr<Piece>& selected_piece, const std::shared_ptr<Piece>& left_piece, const std::shared_ptr<Piece>& right_piece) {
   bool ret = false;
 
   //if the mask is greater 2 the pawn hasn't moved yet
-  if (selected_piece.get_role() == PAWN && selected_piece.get_mask().height() > 2) {
+  if (selected_piece->get_role() == PAWN && selected_piece->get_mask().height() > 2) {
 
     //different checks for black and white pawn
-    if (selected_piece.get_color() == WHITE) {
-      if (!left_piece.empty()  || !right_piece.empty()) {
+    if (selected_piece->get_color() == WHITE) {
+      if (!left_piece->empty()  || !right_piece->empty()) {
         //the piece that is taken en passant is the non empty piece if both pieces are non empty
         // the right piece is taken
-        Piece &to_take = !left_piece.empty() ? left_piece : right_piece;
-        if (to_take.get_color() != WHITE) {
+        std::shared_ptr<Piece> to_take = !left_piece->empty() ? left_piece : right_piece;
+        if (to_take->get_color() != WHITE) {
           //add the taken pieces to the taken pieces and sets the cell to empty
-          m_taken_pieces.push_back(to_take);
-          to_take = Piece(NONE, EMPTY);
+          m_taken_pieces.push_back(std::make_shared<Piece>(new EmptyField));
+          to_take.swap(m_taken_pieces.back());
           ret = true;
         }
       }
       //pawn has moved, mask is now 1 x 2
-      selected_piece.set_mask({{1, 0}, 1, 2});
+      selected_piece->set_mask({{1, 0}, 1, 2});
     } else {
       //same but for black
-      if (!left_piece.empty() || !right_piece.empty()) {
-        Piece to_take = !left_piece.empty() ? left_piece : right_piece;
-        if (to_take.get_color() != BLACK) {
-          m_taken_pieces.push_back(to_take);
-          to_take = Piece(NONE, EMPTY);
+      if (!left_piece->empty() || !right_piece->empty()) {
+        std::shared_ptr<Piece> to_take = !left_piece->empty() ? left_piece : right_piece;
+        if (to_take->get_color() != BLACK) {
+          m_taken_pieces.push_back(std::make_shared<Piece>(new EmptyField));
+         to_take.swap(m_taken_pieces.back());
         }
       }
-      selected_piece.set_mask({{0, 1}, 1, 2});
+      selected_piece->set_mask({{0, 1}, 1, 2});
     }
   }
   return ret;
 }
 
-bool chess::Board::correct_color(const int &current_turn_color, const Piece &piece) {
-  return current_turn_color == piece.get_color();
+bool chess::Board::correct_color(const int &current_turn_color, const std::shared_ptr<Piece>& piece) {
+  return current_turn_color == piece->get_color();
 }
 
 bool chess::Board::inside_board(const Coordinates &to) {
   return !(to.x > BOARD_WIDTH - 1 || to.y > BOARD_HEIGHT - 1);
 }
 
-bool chess::Board::inside_mask(const int &d_x, const int &d_y, const Piece &piece) {
-  Mask mask = piece.get_mask();
+bool chess::Board::inside_mask(const int &d_x, const int &d_y, const std::shared_ptr<Piece>& piece) {
+  Mask mask = piece->get_mask();
 
-  if (piece.get_role() != PAWN) {
+  if (piece->get_role() != PAWN) {
     //checks if the proposed move is not greater than the distance from the center to the boarder of the mask
     return !((mask.width() / 2) + 1 <= d_x || (mask.height() / 2) + 1 <= d_y);
   } else {
@@ -229,16 +229,16 @@ bool chess::Board::inside_mask(const int &d_x, const int &d_y, const Piece &piec
   }
 }
 
-bool chess::Board::on_move_mask(const int &d_x, const int &d_y, const Piece &piece, const bool &takes_piece) {
-  Mask mask = piece.get_mask();
+bool chess::Board::on_move_mask(const int &d_x, const int &d_y, const std::shared_ptr<Piece>& piece, const bool &takes_piece) {
+  Mask mask = piece->get_mask();
   //coordinates relative to the center of mask
   int c_x = 0;
   int c_y = 0;
-  switch (piece.get_role()) {
+  switch (piece->get_role()) {
 
     //Pawns can only move in one direction
   case PAWN: {
-    if (piece.get_color() == BLACK) {
+    if (piece->get_color() == BLACK) {
       c_x = d_x;
       c_y = d_y;
     } else {
@@ -255,8 +255,8 @@ bool chess::Board::on_move_mask(const int &d_x, const int &d_y, const Piece &pie
   }
 
   //pawns can take pieces diagonal
-  if (takes_piece && piece.get_role() == PAWN) {
-    return piece.get_color() == BLACK ? (d_x == -1 || d_x == 1) && (d_y == 1) : (d_x == -1 || d_x == 1)
+  if (takes_piece && piece->get_role() == PAWN) {
+    return piece->get_color() == BLACK ? (d_x == -1 || d_x == 1) && (d_y == 1) : (d_x == -1 || d_x == 1)
         && (d_y == -1);
   }
 
@@ -267,16 +267,16 @@ bool chess::Board::on_move_mask(const int &d_x, const int &d_y, const Piece &pie
 //checks if there is a piece in the way
 bool chess::Board::collides(const Coordinates &from, const Coordinates &to) const {
   Coordinates current_cell = from;
-  Piece selected_piece = m_board_matrix[from];
+  std::shared_ptr<Piece> selected_piece = m_board_matrix[from];
   //check for direction
   Coordinates d_direction = to - from;
 
   //if pieces have the same color they colide
-  if (selected_piece.get_color() == m_board_matrix[to].get_color())
+  if (selected_piece->get_color() == m_board_matrix[to]->get_color())
     return true;
 
   //knights can leap over pieces, they cant't collide
-  if (selected_piece.get_role() == KNIGHT)
+  if (selected_piece->get_role() == KNIGHT)
     return false;
 
   Coordinates d_check_direction{0, 0};
@@ -286,8 +286,8 @@ bool chess::Board::collides(const Coordinates &from, const Coordinates &to) cons
       //case NE
       if (d_direction.y < 0) {
         d_check_direction = {1, -1};
-        std::clog << "Diagonal move NE from << " << selected_piece.get_color_str() << " "
-                  << selected_piece.get_role_str() << "\n";
+        std::clog << "Diagonal move NE from << " << selected_piece->get_color_str() << " "
+                  << selected_piece->get_role_str() << "\n";
       }
       //case SE
       if (d_direction.y > 0) {
@@ -333,14 +333,14 @@ bool chess::Board::collides(const Coordinates &from, const Coordinates &to) cons
 
   while (current_cell != to) {
     current_cell += d_check_direction;
-    if (!m_board_matrix[current_cell].empty()) {
+    if (!m_board_matrix[current_cell]->empty()) {
       return true;
     }
   }
   return false;
 }
 
-std::vector<Piece> Board::taken_pieces() const {
+std::vector<std::shared_ptr<Piece>> Board::taken_pieces() const {
   return m_taken_pieces;
 }
 }//namespace chess

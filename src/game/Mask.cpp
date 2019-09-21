@@ -2,7 +2,7 @@
 // Created by joris on 09.08.19.
 //
 
-#include "Mask.h"
+#include "mask.h"
 namespace chess {
 
 Mask::Mask(const int &role, const int &color) {

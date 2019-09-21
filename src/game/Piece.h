@@ -9,22 +9,18 @@
 namespace chess {
 
 class Piece {
-private:
+protected:
   int m_color = NONE;
-  int m_role = EMPTY;
   Mask m_pseudo_legal_move_mask{};
-  std::string m_representing_char = " ";
-  const static std::map<int, std::string> role_to_string_lut;
-  const static std::map<int, std::string> color_to_string_lut;
 
 public:
-  Piece() = default;
-  Piece(const int &color, const int &role);
+  virtual ~Piece() = 0;
+  Piece(const int &color);
+  virtual std::string get_icon() const = 0;
+  virtual int get_role() const = 0;
+  virtual std::string get_role_str() const = 0;
   int get_color() const;
-  std::string get_icon() const;
   Mask get_mask() const;
-  int get_role() const;
-  std::string get_role_str() const;
   std::string get_color_str() const;
   void set_mask(const Mask &new_mask);
   bool empty() const;
