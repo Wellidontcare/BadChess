@@ -119,8 +119,9 @@ chess::Board::move_piece(const std::string &from, const std::string &to, const i
                                                                                      selected_piece,
                                                                                      from,
                                                                                      to));
+    return std::make_shared<ValidMoveMessageJustMoved>(ValidMoveMessageJustMoved(to_move_to, from, to));
   }
-  return std::make_shared<ValidMoveMessageJustMoved>(ValidMoveMessageJustMoved(to_move_to, from, to));
+  return message;
 }
 
 //checks if a move is a valid move
@@ -141,6 +142,9 @@ chess::Board::valid_move(const Coordinates &from, const Coordinates &to,
   if (!correct_color(current_turn_color, selected_piece))
     return std::make_shared<InvalidMoveMessageWrongColor>(InvalidMoveMessageWrongColor(selected_piece));
 
+  if(!inside_board(from)){
+      return std::make_shared<InvalidMoveMessageNothingMoved>(InvalidMoveMessageNothingMoved());
+  }
   //checks if the move would be inside the board
   if (!inside_board(to))
     return std::make_shared<InvalidMoveMessageOutsideOfBoard>(InvalidMoveMessageOutsideOfBoard(selected_piece));
@@ -210,7 +214,7 @@ bool chess::Board::correct_color(const int &current_turn_color, const std::share
 }
 
 bool chess::Board::inside_board(const Coordinates &to) {
-  return !(to.x > BOARD_WIDTH - 1 || to.y > BOARD_HEIGHT - 1);
+  return !(to.x >= BOARD_WIDTH || to.y >= BOARD_HEIGHT);
 }
 
 bool chess::Board::inside_mask(const int &d_x, const int &d_y, const std::shared_ptr<Piece> &piece) {
