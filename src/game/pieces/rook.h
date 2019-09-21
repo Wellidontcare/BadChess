@@ -1,6 +1,6 @@
 #ifndef ROOK_H
 #define ROOK_H
-#include "Piece.h"
+#include "../piece.h"
 namespace chess {
 
 class Rook : public Piece

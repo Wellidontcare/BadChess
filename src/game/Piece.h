@@ -4,7 +4,7 @@
 #pragma once
 #include <vector>
 #include <map>
-#include "Mask.h"
+#include "mask.h"
 
 namespace chess {
 

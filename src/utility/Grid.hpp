@@ -30,13 +30,7 @@ public:
   auto rend(){
       return m_grid_matrix.rend();
   }
-  ~Grid2d(){
-      if(std::is_pointer<T>::value) {
-      for(T ptr : m_grid_matrix){
-          delete ptr;
-      }
-      }
-  }
+  ~Grid2d(){}
 };
 template<typename T>
 Grid2d<T>::Grid2d(const int &width, const int &height) : m_width(width), m_height(height), m_grid_matrix(width*height){}

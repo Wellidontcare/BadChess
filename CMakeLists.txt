@@ -15,7 +15,8 @@ endif(APPLE)
 
 set(source_dir "${PROJECT_SOURCE_DIR}/src")
 file(GLOB game_files "${source_dir}/game/*.cpp")
+file(GLOB pieces_files "${source_dir}/game/pieces/*.cpp")
 file(GLOB utility_files "${source_dir}/utility/*.cpp")
 file(GLOB entry "${PROJECT_SOURCE_DIR}/main.cpp")
 
-add_executable(BadChess ${game_files} ${utility_files} ${entry})
+add_executable(BadChess ${game_files}  ${pieces_files} ${utility_files} ${entry})

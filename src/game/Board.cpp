@@ -6,24 +6,24 @@
 namespace chess {
 
 chess::Board::Board()
-    : m_board_matrix(BOARD_WIDTH, BOARD_HEIGHT, std::make_shared<Piece>(new EmptyField)), m_taken_pieces{} {
+    : m_board_matrix(BOARD_WIDTH, BOARD_HEIGHT, ChessPieceFactory::make(NONE, EMPTY)), m_taken_pieces{} {
   //init black side pawns
-  std::fill_n(m_board_matrix.begin()+BOARD_WIDTH, 8,chess::ChessPieceFactory::create_piece(BLACK, PAWN));
+  std::fill_n(m_board_matrix.begin()+BOARD_WIDTH, 8,chess::ChessPieceFactory::make(BLACK, PAWN));
   //init black side
   int current_piece = ROOK;
-  std::generate_n(m_board_matrix.begin(), 5, [&current_piece](){return chess::ChessPieceFactory::create_piece(BLACK, current_piece++);});
+  std::generate_n(m_board_matrix.begin(), 5, [&current_piece](){return chess::ChessPieceFactory::make(BLACK, current_piece++);});
   current_piece = BISHOP;
-  std::generate_n(m_board_matrix.begin()+5, 3, [&current_piece](){return chess::ChessPieceFactory::create_piece(BLACK, current_piece--);});
+  std::generate_n(m_board_matrix.begin()+5, 3, [&current_piece](){return chess::ChessPieceFactory::make(BLACK, current_piece--);});
 
   //init white side pawns
-  std::fill_n(m_board_matrix.begin()+(BOARD_WIDTH*6), 8,chess::ChessPieceFactory::create_piece(WHITE, PAWN));
+  std::fill_n(m_board_matrix.begin()+(BOARD_WIDTH*6), 8,chess::ChessPieceFactory::make(WHITE, PAWN));
   //init white side
   current_piece = ROOK;
-  std::generate_n(m_board_matrix.end()-BOARD_WIDTH, 5, [&current_piece](){return chess::ChessPieceFactory::create_piece(WHITE, current_piece++);});
+  std::generate_n(m_board_matrix.end()-BOARD_WIDTH, 5, [&current_piece](){return chess::ChessPieceFactory::make(WHITE, current_piece++);});
   current_piece = BISHOP;
-  std::generate_n(m_board_matrix.end()-3, 3, [&current_piece](){return chess::ChessPieceFactory::create_piece(WHITE, current_piece--);});
-
+  std::generate_n(m_board_matrix.end()-3, 3, [&current_piece](){return chess::ChessPieceFactory::make(WHITE, current_piece--);});
 }
+
 void Board::set_piece(const int &x, const int &y, const std::shared_ptr<Piece>& piece) {
     m_board_matrix[{x, y}] = std::move(piece);
 }
@@ -79,8 +79,8 @@ chess::Board::move_piece(const std::string &from, const std::string &to, const i
   std::vector<Coordinates> coords = parse_input(from, to);
   MoveMessage message = valid_move(coords[0], coords[1], current_turn_color);
 
-  auto selected_piece = m_board_matrix[coords[0]];
-  auto to_move_to = m_board_matrix[coords[1]];
+  std::shared_ptr<Piece> selected_piece = m_board_matrix[coords[0]];
+  std::shared_ptr<Piece> to_move_to = m_board_matrix[coords[1]];
 
   bool took_piece = !to_move_to->empty();
   if (message.valid_move) {
@@ -91,17 +91,17 @@ chess::Board::move_piece(const std::string &from, const std::string &to, const i
     Coordinates right_piece_coords =
         {(coords[0].x + 1), (selected_piece->get_color() == BLACK ? coords[0].y + 1 : coords[0].y - 1)};
     if (en_passant(selected_piece, m_board_matrix[left_piece_coords], m_board_matrix[right_piece_coords])) {
-      set_piece(coords[0].x, coords[0].y, std::make_shared<Piece>(new EmptyField));
+      set_piece(coords[0].x, coords[0].y, std::make_shared<Piece>(EmptyField()));
       set_piece(coords[1].x, coords[1].y, selected_piece);
       return {true, message.message + "Nice move, you took that pawn en passant :)\n"};
     }
     if(to_move_to->empty()){
-        selected_piece.swap(to_move_to);
+        std::swap(to_move_to, selected_piece);
     }
     else{
         //if a piece was taken add it to taken pieces
-        m_taken_pieces.push_back(std::make_shared<Piece>(new EmptyField));
-        to_move_to.swap(m_taken_pieces.back());
+        m_taken_pieces.push_back(std::make_shared<Piece>(EmptyField()));
+        std::swap(m_taken_pieces.back(), to_move_to);
     }
     //returns what happened
     return {true, message.message + "The " + to_move_to->get_color_str() + " "
@@ -187,8 +187,8 @@ bool chess::Board::en_passant(const std::shared_ptr<Piece>& selected_piece, cons
         std::shared_ptr<Piece> to_take = !left_piece->empty() ? left_piece : right_piece;
         if (to_take->get_color() != WHITE) {
           //add the taken pieces to the taken pieces and sets the cell to empty
-          m_taken_pieces.push_back(std::make_shared<Piece>(new EmptyField));
-          to_take.swap(m_taken_pieces.back());
+          m_taken_pieces.push_back(std::make_shared<Piece>(EmptyField()));
+          std::swap(m_taken_pieces.back(), to_take);
           ret = true;
         }
       }
@@ -199,8 +199,8 @@ bool chess::Board::en_passant(const std::shared_ptr<Piece>& selected_piece, cons
       if (!left_piece->empty() || !right_piece->empty()) {
         std::shared_ptr<Piece> to_take = !left_piece->empty() ? left_piece : right_piece;
         if (to_take->get_color() != BLACK) {
-          m_taken_pieces.push_back(std::make_shared<Piece>(new EmptyField));
-         to_take.swap(m_taken_pieces.back());
+          m_taken_pieces.push_back(std::make_shared<Piece>(EmptyField()));
+         std::swap(m_taken_pieces.back(), to_take);
         }
       }
       selected_piece->set_mask({{0, 1}, 1, 2});

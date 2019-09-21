@@ -13,7 +13,7 @@
 #include "Piece.h"
 #include "../utility/Grid.hpp"
 #include "../utility/Coordinates.h"
-#include "../utility/Input.h"
+#include "../utility/input.h"
 #include "chesspiecefactory.h"
 
 namespace chess {

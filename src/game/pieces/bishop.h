@@ -1,6 +1,6 @@
 #ifndef BISHOP_H
 #define BISHOP_H
-#include "piece.h"
+#include "../piece.h"
 namespace chess {
 
 class Bishop : public Piece
@@ -10,9 +10,9 @@ public:
 
     // Piece interface
 public:
-    std::string get_icon() const;
-    int get_role() const;
-    std::string get_role_str() const;
+    std::string get_icon() const override;
+    int get_role() const override;
+    std::string get_role_str() const override;
 };
 }
 
