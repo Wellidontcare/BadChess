@@ -5,7 +5,7 @@
 #include "piece.h"
 
 namespace chess {
-Piece::~Piece() {};
+Piece::~Piece() = default;
 
 Piece::Piece(const int &color)
     : m_color(color) {}

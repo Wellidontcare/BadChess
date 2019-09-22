@@ -106,7 +106,7 @@ void chess::ChessGame::run() {
   }
 }
 bool chess::ChessGame::check_game_over() {
-  for (auto p : m_board.taken_pieces()) {
+  for (const auto& p : m_board.taken_pieces()) {
     if (p->get_role() == KING) {
       return true;
     }

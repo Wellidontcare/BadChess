@@ -30,16 +30,16 @@ bool InvalidMoveMessageWrongColor::is_valid_move() {
   return false;
 }
 
-MoveMessage::MoveMessage(const std::shared_ptr<chess::Piece> &selected_piece) : m_selected_piece(selected_piece) {}
+MoveMessage::MoveMessage(std::shared_ptr<chess::Piece> selected_piece) : m_selected_piece(std::move(selected_piece)) {}
 
-MoveMessage::MoveMessage(const std::shared_ptr<chess::Piece> &selected_piece,
-                         const std::shared_ptr<chess::Piece> &taken_piece,
-                         const std::string &from,
-                         const std::string &to)
-    : m_selected_piece(selected_piece), m_taken_piece(taken_piece), m_from(from), m_to(to) {}
+MoveMessage::MoveMessage(std::shared_ptr<chess::Piece> selected_piece,
+                         std::shared_ptr<chess::Piece> taken_piece,
+                         std::string from,
+                         std::string to)
+    : m_selected_piece(std::move(selected_piece)), m_taken_piece(std::move(taken_piece)), m_from(std::move(from)), m_to(std::move(to)) {}
 
-MoveMessage::MoveMessage(const std::shared_ptr<chess::Piece> &selected_piece, std::string from, std::string to)
-    : m_selected_piece(selected_piece), m_from(std::move(from)), m_to(std::move(to)) {}
+MoveMessage::MoveMessage(std::shared_ptr<chess::Piece> selected_piece, std::string from, std::string to)
+    : m_selected_piece(std::move(selected_piece)), m_from(std::move(from)), m_to(std::move(to)) {}
 bool MoveMessage::is_valid_move() {
   return false;
 }

@@ -11,3 +11,4 @@ std::shared_ptr<chess::Piece> chess::ChessPieceFactory::make(const int &color, c
   default:return std::make_shared<EmptyField>(EmptyField());
   }
 }
+chess::ChessPieceFactory::ChessPieceFactory() {}

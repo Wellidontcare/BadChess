@@ -35,7 +35,7 @@ chess::Board::Board()
 }
 
 void Board::set_piece(const int &x, const int &y, const std::shared_ptr<Piece> &piece) {
-  m_board_matrix[{x, y}] = std::move(piece);
+  m_board_matrix[{x, y}] = piece;
 }
 
 //draws the board graphics
@@ -43,7 +43,7 @@ void chess::Board::show() {
   //draw taken pieces
   std::cout << "╔ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ═ ╗\n ";
   int piece_count = 0;
-  for (auto p : m_taken_pieces) {
+  for (const auto& p : m_taken_pieces) {
     std::cout << p->get_icon() << " ";
     if (piece_count > 15) {
       std::cout << '\n';
@@ -65,7 +65,7 @@ void chess::Board::show() {
         x < BOARD_WIDTH;
         ++x) {
       std::string current_icon = m_board_matrix[{x, y}]->get_icon();
-      std::string current_spacing = " ";
+      std::string current_spacing;
       if (current_icon == " ") {
         //generate checker pattern (if x+y odd)
         current_icon = (x + y) & 1 ? "██" : "▒▒";
@@ -83,7 +83,7 @@ void chess::Board::show() {
 }
 
 //Moves a piece and returns wether the move was valid, invalid moves contain an error message string,
-//vaid moves contain the last move that happened as string
+//valid moves contain the last move that happened as string
 std::shared_ptr<MoveMessage>
 chess::Board::move_piece(const std::string &from, const std::string &to, const int &current_turn_color) {
   std::vector<Coordinates> coords = parse_input(from, to);
@@ -264,7 +264,7 @@ bool chess::Board::on_move_mask(const int &d_x,
   }
 
   //returns wether the mask is 0 or 1 at the coordinates
-  return mask[static_cast<unsigned long>(c_x + c_y * mask.width())];
+  return static_cast<bool> (mask[static_cast<unsigned long>(c_x + c_y * mask.width())]);
 }
 
 //checks if there is a piece in the way
@@ -274,7 +274,7 @@ bool chess::Board::collides(const Coordinates &from, const Coordinates &to) cons
   //check for direction
   Coordinates d_direction = to - from;
 
-  //if pieces have the same color they colide
+  //if pieces have the same color they collide
   if (selected_piece->get_color() == m_board_matrix[to]->get_color())
     return true;
 

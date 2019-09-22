@@ -15,7 +15,7 @@ protected:
 
 public:
   virtual ~Piece() = 0;
-  Piece(const int &color);
+  explicit Piece(const int &color);
   virtual std::string get_icon() const = 0;
   virtual int get_role() const = 0;
   virtual std::string get_role_str() const = 0;

@@ -16,4 +16,3 @@ int chess::Rook::get_role() const {
   return ROOK;
 }
 
-chess::Rook::~Rook() {}

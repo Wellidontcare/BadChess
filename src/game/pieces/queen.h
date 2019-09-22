@@ -5,7 +5,7 @@
 namespace chess {
 class Queen : public Piece {
 public:
-  Queen(const int &color);
+  explicit Queen(const int &color);
 
   // Piece interface
 public:

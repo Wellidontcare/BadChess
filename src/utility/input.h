@@ -4,7 +4,7 @@
 
 #pragma once
 #include "../game/board.h"
-
+//TODO make input parser class
 namespace chess {
 std::vector<Coordinates> parse_input(const std::string &from, const std::string &to);
 bool valid_input(const std::string &from, const std::string &to);

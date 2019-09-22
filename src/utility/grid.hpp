@@ -29,7 +29,7 @@ public:
   auto rend() {
     return m_grid_matrix.rend();
   }
-  ~Grid2d() {}
+  ~Grid2d() = default;
 };
 template<typename T>
 Grid2d<T>::Grid2d(const int &width, const int &height)

@@ -5,7 +5,7 @@
 #pragma once
 #include "board.h"
 
-//TODO inplement proper game over logic
+//TODO implement proper game over logic
 //TODO check for chess and chess mate
 namespace chess {
 class ChessGame {
