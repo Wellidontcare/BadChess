@@ -10,12 +10,14 @@
 #include "pieces/bishop.h"
 #include "pieces/king.h"
 
-namespace chess {
+namespace chess
+{
 
-class ChessPieceFactory {
+class ChessPieceFactory
+{
 public:
-  ChessPieceFactory();
-  static std::shared_ptr<Piece> make(const int &color, const int &role);
+    ChessPieceFactory();
+    static std::shared_ptr<Piece> make(const int &color, const int &role);
 };
 }
 

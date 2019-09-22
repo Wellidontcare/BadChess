@@ -4,8 +4,9 @@
 #include <iostream>
 #include "src/game/chessgame.h"
 
-int main() {
-  chess::ChessGame App;
-  App.run();
-  return 0;
+int main()
+{
+    chess::ChessGame App;
+    App.run();
+    return 0;
 }

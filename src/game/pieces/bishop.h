@@ -1,17 +1,19 @@
 #ifndef BISHOP_H
 #define BISHOP_H
 #include "../piece.h"
-namespace chess {
+namespace chess
+{
 
-class Bishop : public Piece {
+class Bishop: public Piece
+{
 public:
-  explicit Bishop(const int &color);
+    explicit Bishop(const int &color);
 
-  // Piece interface
+    // Piece interface
 public:
-  std::string get_icon() const override;
-  int get_role() const override;
-  std::string get_role_str() const override;
+    std::string get_icon() const override;
+    int get_role() const override;
+    std::string get_role_str() const override;
 };
 }
 

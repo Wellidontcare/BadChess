@@ -3,17 +3,19 @@
 
 #include "../piece.h"
 
-namespace chess {
+namespace chess
+{
 
-class Knight : public Piece {
+class Knight: public Piece
+{
 public:
-  explicit Knight(const int &color);
+    explicit Knight(const int &color);
 
-  // Piece interface
+    // Piece interface
 public:
-  std::string get_icon() const override;
-  int get_role() const override;
-  std::string get_role_str() const override;
+    std::string get_icon() const override;
+    int get_role() const override;
+    std::string get_role_str() const override;
 };
 }
 

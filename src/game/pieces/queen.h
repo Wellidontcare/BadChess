@@ -2,16 +2,18 @@
 #define QUEEN_H
 
 #include "../piece.h"
-namespace chess {
-class Queen : public Piece {
+namespace chess
+{
+class Queen: public Piece
+{
 public:
-  explicit Queen(const int &color);
+    explicit Queen(const int &color);
 
-  // Piece interface
+    // Piece interface
 public:
-  std::string get_icon() const override;
-  int get_role() const override;
-  std::string get_role_str() const override;
+    std::string get_icon() const override;
+    int get_role() const override;
+    std::string get_role_str() const override;
 };
 }
 #endif // QUEEN_H

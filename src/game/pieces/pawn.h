@@ -2,17 +2,19 @@
 #define PAWN_H
 #include "../piece.h"
 
-namespace chess {
+namespace chess
+{
 
-class Pawn : public Piece {
+class Pawn: public Piece
+{
 public:
-  explicit Pawn(const int &color);
+    explicit Pawn(const int &color);
 
-  // Piece interface
+    // Piece interface
 public:
-  std::string get_icon() const override;
-  int get_role() const override;
-  std::string get_role_str() const override;
+    std::string get_icon() const override;
+    int get_role() const override;
+    std::string get_role_str() const override;
 };
 }
 

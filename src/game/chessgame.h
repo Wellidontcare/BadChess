@@ -7,12 +7,14 @@
 
 //TODO implement proper game over logic
 //TODO check for chess and chess mate
-namespace chess {
-class ChessGame {
+namespace chess
+{
+class ChessGame
+{
 private:
-  Board m_board;
-  bool check_game_over();
+    Board m_board;
+    bool check_game_over();
 public:
-  void run();
+    void run();
 };
 }//chess
