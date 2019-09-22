@@ -9,12 +9,12 @@
 class MoveMessage
 {
 public:
-    explicit MoveMessage(const std::shared_ptr<chess::Piece> &selected_piece);
-    MoveMessage(const std::shared_ptr<chess::Piece> &selected_piece,
-                const std::shared_ptr<chess::Piece> &taken_piece,
-                const std::string &from,
-                const std::string &to);
-    MoveMessage(const std::shared_ptr<chess::Piece> &selected_piece, std::string from, std::string to);
+    explicit MoveMessage(const std::shared_ptr<chess::Piece> selected_piece);
+    MoveMessage(std::shared_ptr<chess::Piece> selected_piece,
+                std::shared_ptr<chess::Piece> taken_piece,
+                std::string from,
+                std::string to);
+    MoveMessage(std::shared_ptr<chess::Piece> selected_piece, std::string from, std::string to);
     MoveMessage() = default;
     virtual bool is_valid_move();
     virtual std::string get_message();

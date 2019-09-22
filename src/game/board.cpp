@@ -98,22 +98,26 @@ std::shared_ptr<MoveMessage>
 chess::Board::move_piece(const std::string &from, const std::string &to, const int &current_turn_color)
 {
     std::vector<Coordinates> coords = parse_input(from, to);
-    std::shared_ptr<MoveMessage> message = valid_move(coords[0], coords[1], current_turn_color);
+    Coordinates& from_coords = coords[0];
+    Coordinates& to_coords = coords[1];
+    std::shared_ptr<MoveMessage> message = valid_move(from_coords, to_coords, current_turn_color);
 
-    std::shared_ptr<Piece> &selected_piece = m_board_matrix[coords[0]];
-    std::shared_ptr<Piece> &to_move_to = m_board_matrix[coords[1]];
+    std::shared_ptr<Piece> &selected_piece = m_board_matrix[from_coords];
+    std::shared_ptr<Piece> &to_move_to = m_board_matrix[to_coords];
 
     bool took_piece = !to_move_to->empty();
-    if (message->is_valid_move()) {
 
-        //check en passant and special first pawn move
-        Coordinates left_piece_coords =
-            {(coords[0].x - 1), (selected_piece->get_color() == BLACK ? coords[0].y + 1 : coords[0].y - 1)};
-        Coordinates right_piece_coords =
-            {(coords[0].x + 1), (selected_piece->get_color() == BLACK ? coords[0].y + 1 : coords[0].y - 1)};
-        if (en_passant(selected_piece, m_board_matrix[left_piece_coords], m_board_matrix[right_piece_coords])) {
-            set_piece(coords[0].x, coords[0].y, std::make_shared<EmptyField>(EmptyField()));
-            set_piece(coords[1].x, coords[1].y, selected_piece);
+    if (message->is_valid_move()) {
+        if (selected_piece->get_role() == PAWN) {
+            //check en passant and special first pawn move
+            Coordinates left_piece_coords =
+                {(from_coords.x - 1), (selected_piece->get_color() == BLACK ? from_coords.y + 1 : from_coords.y - 1)};
+            Coordinates right_piece_coords =
+                {(from_coords.x + 1), (selected_piece->get_color() == BLACK ? from_coords.y + 1 : from_coords.y - 1)};
+            if(en_passant(selected_piece, m_board_matrix[left_piece_coords], m_board_matrix[right_piece_coords])){
+                    set_piece(from_coords.x, from_coords.y, std::make_shared<EmptyField>(EmptyField()));
+                    set_piece(to_coords.x, to_coords.y, selected_piece);
+        }
             return std::make_shared<ValidMoveMessageEnPassant>(ValidMoveMessageEnPassant());
         }
         if (to_move_to->empty())
@@ -127,7 +131,7 @@ chess::Board::move_piece(const std::string &from, const std::string &to, const i
         //return what happened
         if (took_piece)
             return std::make_shared<ValidMoveMessagePieceTaken>(ValidMoveMessagePieceTaken(to_move_to,
-                                                                                           selected_piece,
+                                                                                           m_taken_pieces.back(),
                                                                                            from,
                                                                                            to));
         return std::make_shared<ValidMoveMessageJustMoved>(ValidMoveMessageJustMoved(to_move_to, from, to));
@@ -140,7 +144,6 @@ std::shared_ptr<MoveMessage>
 chess::Board::valid_move(const Coordinates &from, const Coordinates &to,
                          const int &current_turn_color) const
 {
-
     //checks if the same field was selected twice
     if (from == to)
         return std::make_shared<InvalidMoveMessageNoMovement>(InvalidMoveMessageNoMovement());
@@ -154,6 +157,7 @@ chess::Board::valid_move(const Coordinates &from, const Coordinates &to,
     if (!correct_color(current_turn_color, selected_piece))
         return std::make_shared<InvalidMoveMessageWrongColor>(InvalidMoveMessageWrongColor(selected_piece));
 
+    //check if selected piece is on the board
     if (!inside_board(from)) {
         return std::make_shared<InvalidMoveMessageNothingMoved>(InvalidMoveMessageNothingMoved());
     }
@@ -165,6 +169,7 @@ chess::Board::valid_move(const Coordinates &from, const Coordinates &to,
     //checks if the piece can move that far
     int d_x = to.x - from.x;
     int d_y = to.y - from.y;
+
     if (!inside_mask(abs(d_x), abs(d_y), selected_piece))
         return std::make_shared<InvalidMoveMessageOutOfRange>(InvalidMoveMessageOutOfRange(selected_piece));
 
@@ -172,6 +177,7 @@ chess::Board::valid_move(const Coordinates &from, const Coordinates &to,
     bool takes_piece = m_board_matrix[to]->get_icon() != std::string(" ");
     if (!on_move_mask(d_x, d_y, selected_piece, takes_piece))
         return std::make_shared<InvalidMoveMessageIllegalMove>(InvalidMoveMessageIllegalMove(selected_piece));
+
     //checks if there are pieces in the way
     if (collides(from, to)) {
         return std::make_shared<InvalidMoveMessageCollision>(InvalidMoveMessageCollision());
