@@ -16,7 +16,7 @@ std::vector<Coordinates> parse_input(const std::string &from, const std::string 
             {x2, y2}};
 }
 
-//checks wether the each input is only two characters, with the first character being a letter and the second a single digit
+//checks whether the each input is only two characters, with the first character being a letter and the second a single digit
 bool valid_input(const std::string &from, const std::string &to)
 {
     return !(from.size() > 2 || to.size() > 2 || !isalpha(from[0]) || !isalpha(to[0]) || !isdigit(from[1])
