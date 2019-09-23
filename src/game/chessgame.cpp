@@ -52,7 +52,7 @@ void chess::ChessGame::run()
                 getchar();
                 continue;
             }
-            std::shared_ptr<MoveMessage> move = m_board.move_piece(from, to, turn);
+            const std::shared_ptr<MoveMessage> move = m_board.move_piece(from, to, turn);
             if (!move->is_valid_move()) {
                 std::cout << move->get_message() << '\n';
                 std::cout << "\nPress any key to try again:)\n";
@@ -84,7 +84,7 @@ void chess::ChessGame::run()
                 getchar();
                 continue;
             }
-            std::shared_ptr<MoveMessage> move = m_board.move_piece(from, to, turn);
+            const std::shared_ptr<MoveMessage> move = m_board.move_piece(from, to, turn);
             if (!move->is_valid_move()) {
                 std::cout << move->get_message() << '\n';
                 std::cout << "\nPress any key to try again:)\n";

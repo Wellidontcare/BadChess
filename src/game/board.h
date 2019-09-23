@@ -18,11 +18,10 @@
 
 namespace chess
 {
-const int BOARD_SIZE = 64;
 
-const int BOARD_WIDTH = 8;
+constexpr int BOARD_WIDTH = 8;
 
-const int BOARD_HEIGHT = 8;
+constexpr int BOARD_HEIGHT = 8;
 
 class Board
 {
@@ -36,8 +35,8 @@ private:
                                             const Coordinates &to,
                                             const int &current_turn_color) const;
     bool en_passant(const std::shared_ptr<Piece> &selected_piece,
-                    const std::shared_ptr<Piece> &left_piece,
-                    const std::shared_ptr<Piece> &right_piece);
+                    std::shared_ptr<Piece> &left_piece,
+                    std::shared_ptr<Piece> &right_piece);
     bool collides(const Coordinates &from, const Coordinates &to) const;
     static bool correct_color(const int &current_turn_color, const std::shared_ptr<Piece> &piece);
     static bool inside_board(const Coordinates &to);
