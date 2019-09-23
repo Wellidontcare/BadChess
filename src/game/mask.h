@@ -14,14 +14,14 @@ enum
     QUEEN,
     KING,
     PAWN,
-    EMPTY
+    EMPTY_ROLE
 };
 
 enum
 {
     WHITE,
     BLACK,
-    NONE
+    EMPTY_COLOR
 };
 //a mask that contains the valid move pattern for a chess piece in an array
 class Mask

@@ -34,7 +34,7 @@ void Piece::set_mask(const Mask &new_mask)
 
 bool Piece::empty() const
 {
-    return m_color == NONE;
+    return m_color == EMPTY_COLOR;
 }
 
 } //chess

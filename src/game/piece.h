@@ -12,7 +12,7 @@ namespace chess
 class Piece
 {
 protected:
-    int m_color = NONE;
+    int m_color = EMPTY_COLOR;
     Mask m_pseudo_legal_move_mask{};
 
 public:
