@@ -28,7 +28,7 @@ class Board
 private:
     Grid2d<std::shared_ptr<Piece>> m_board_matrix;
     std::vector<std::shared_ptr<Piece>> m_taken_pieces;
-    void set_piece(const int &x, const int &y, const std::shared_ptr<Piece> &piece);
+    void set_piece(const Coordinates& coordinates, const std::shared_ptr<Piece> &piece);
 
     //game logic
     std::shared_ptr<MoveMessage> valid_move(const Coordinates &from,

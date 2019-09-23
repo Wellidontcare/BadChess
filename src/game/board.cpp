@@ -41,9 +41,9 @@ chess::Board::Board()
                     { return chess::ChessPieceFactory::make(WHITE, current_piece--); });
 }
 
-void Board::set_piece(const int &x, const int &y, const std::shared_ptr<Piece> &piece)
+void Board::set_piece(const Coordinates& coordinates, const std::shared_ptr<Piece> &piece)
 {
-    m_board_matrix[{x, y}] = piece;
+    m_board_matrix[coordinates] = piece;
 }
 
 //draws the board graphics
@@ -97,23 +97,28 @@ void chess::Board::show()
 std::shared_ptr<MoveMessage>
 chess::Board::move_piece(const std::string &from, const std::string &to, const int &current_turn_color)
 {
-    const std::vector<Coordinates> coords = parse_input(from, to);
-    const std::shared_ptr<MoveMessage> message = valid_move(coords[0], coords[1], current_turn_color);
 
-    std::shared_ptr<Piece> &selected_piece = m_board_matrix[coords[0]];
-    std::shared_ptr<Piece> &to_move_to = m_board_matrix[coords[1]];
+    const std::vector<Coordinates> coords = parse_input(from, to);
+
+    const Coordinates fromC = coords[0];
+    const Coordinates toC = coords[1];
+
+    const std::shared_ptr<MoveMessage> message = valid_move(fromC, toC, current_turn_color);
+
+    std::shared_ptr<Piece> &selected_piece = m_board_matrix[fromC];
+    std::shared_ptr<Piece> &to_move_to = m_board_matrix[toC];
 
     const bool took_piece = !to_move_to->empty();
     if (message->is_valid_move()) {
 
         //check en passant and special first pawn move
         const Coordinates left_piece_coords =
-            {(coords[0].x - 1), (selected_piece->get_color() == BLACK ? coords[0].y + 1 : coords[0].y - 1)};
+            {(fromC.x - 1), (selected_piece->get_color() == BLACK ? fromC.y + 1 : fromC.y - 1)};
         const Coordinates right_piece_coords =
-            {(coords[0].x + 1), (selected_piece->get_color() == BLACK ? coords[0].y + 1 : coords[0].y - 1)};
+            {(fromC.x + 1), (selected_piece->get_color() == BLACK ? fromC.y + 1 : fromC.y - 1)};
         if (en_passant(selected_piece, m_board_matrix[left_piece_coords], m_board_matrix[right_piece_coords])) {
-            set_piece(coords[0].x, coords[0].y, std::make_shared<EmptyField>(EmptyField()));
-            set_piece(coords[1].x, coords[1].y, selected_piece);
+            set_piece(fromC, std::make_shared<EmptyField>(EmptyField()));
+            set_piece(toC, selected_piece);
             return std::make_shared<ValidMoveMessageEnPassant>(ValidMoveMessageEnPassant());
         }
         if (to_move_to->empty())
