@@ -112,10 +112,5 @@ void chess::ChessGame::run()
 }
 bool chess::ChessGame::check_game_over()
 {
-    for (const auto &p : m_board.taken_pieces()) {
-        if (p->get_role() == KING) {
-            return true;
-        }
-    }
-    return false;
+    return std::any_of(m_board.taken_pieces().begin(), m_board.taken_pieces().end(), [](const std::shared_ptr<Piece>& piece){return piece->get_role() == KING;});
 }

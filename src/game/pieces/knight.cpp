@@ -8,7 +8,7 @@ chess::Knight::Knight(const int &color)
 
 std::string chess::Knight::get_icon() const
 {
-    return m_color == WHITE ? "♘" : "♞";
+    return m_color == WHITE ? "♞" : "♘";
 }
 
 int chess::Knight::get_role() const

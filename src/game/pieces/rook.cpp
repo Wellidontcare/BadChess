@@ -8,7 +8,7 @@ chess::Rook::Rook(const int &color)
 
 std::string chess::Rook::get_icon() const
 {
-    return m_color == WHITE ? "♖" : "♜";
+    return m_color == WHITE ? "♜" : "♖";
 }
 
 std::string chess::Rook::get_role_str() const

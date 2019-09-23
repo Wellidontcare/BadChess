@@ -8,7 +8,7 @@ chess::Bishop::Bishop(const int &color)
 
 std::string chess::Bishop::get_icon() const
 {
-    return m_color == WHITE ? "♗" : "♝";
+    return m_color == WHITE ? "♝" : "♗";
 }
 
 int chess::Bishop::get_role() const

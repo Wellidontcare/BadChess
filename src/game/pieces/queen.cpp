@@ -8,7 +8,7 @@ chess::Queen::Queen(const int &color)
 
 std::string chess::Queen::get_icon() const
 {
-    return m_color == WHITE ? "♕" : "♛";
+    return m_color == WHITE ? "♛" : "♕";
 }
 
 std::string chess::Queen::get_role_str() const

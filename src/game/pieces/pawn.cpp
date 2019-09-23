@@ -8,7 +8,7 @@ chess::Pawn::Pawn(const int &color)
 
 std::string chess::Pawn::get_icon() const
 {
-    return m_color == WHITE ? "♙" : "♟";
+    return m_color == WHITE ? "♟" : "♙";
 }
 
 int chess::Pawn::get_role() const

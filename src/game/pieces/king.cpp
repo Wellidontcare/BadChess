@@ -8,7 +8,7 @@ chess::King::King(const int &color)
 
 std::string chess::King::get_icon() const
 {
-    return m_color == WHITE ? "♔" : "♚";
+    return m_color == WHITE ? "♚" : "♔" ;
 }
 int chess::King::get_role() const
 {
