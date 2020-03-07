@@ -330,14 +330,16 @@ bool chess::Board::collides(const Coordinates &from, const Coordinates &to) cons
       }
     }
   }
-
+  bool colides = false;
+  bool last_check = false;
   while (current_cell != to) {
     current_cell += d_check_direction;
+    last_check = colides;
     if (!m_board_matrix[current_cell].empty()) {
-      return true;
+      colides = true;
     }
   }
-  return false;
+  return last_check;
 }
 
 std::vector<Piece> Board::taken_pieces() const {

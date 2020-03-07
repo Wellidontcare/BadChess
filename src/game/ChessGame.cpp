@@ -3,6 +3,9 @@
 //
 
 #include "ChessGame.h"
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 void chess::ChessGame::run() {
 #ifdef _WIN32
     SetConsoleOutputCP(65001);
